@@ -1,3 +1,5 @@
+import math
+
 def ex1():
     '''
     Faça um programa que leia uma quantidade indeterminada de números positivos e conte quantos deles
@@ -64,9 +66,13 @@ def ex3():
     '''           
 
     Z = [5,2,11,8,3,8,7,4]
-
-    
-        
+    mean = (sum(Z)/len(Z))
+    print(str(mean))    
+    quad = sum((x - mean) ** 2 for x in Z)
+    print(str(quad))
+    varia = quad / (len(Z))
+    desvio = math.sqrt(varia)
+    print(str(desvio))
 print("oi qual exercicio vc quer")
 ex = int(input())
 
