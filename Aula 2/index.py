@@ -1,6 +1,8 @@
 import math
 import operator
 import numpy as np
+import matplotlib.pyplot as plt
+import time
 def w(arr1,arr2):
     xi = sum(arr1) # no caso de x, 10
     yi = sum(arr2) # no caso de y, 3636
@@ -16,11 +18,12 @@ def b(arr1,arr2):
     return b
 
 def fy(arr1,arr2):
+    slope = w(arr1,arr2)
+    intercept = b(arr1,arr2)
     y = []
     for i in range(len(arr1)):
-        y.append(round((w(arr1,arr2) * arr1[i]),2) + 12)
-    
-    
+        y.append(round((slope * arr1[i]) + intercept, 2))
+
     return y
        
 def mse(arr1,arr2):
@@ -41,13 +44,83 @@ def q2():
     x = [1,1.5,2,2.5,3]
     y = [366,550,740,890,1090]    
     print(mse(x,y))
+    time.sleep(2)
+    print("Dados reais:")
+    q2_dados()
+    time.sleep(2)
+    print("Comparativo - dados reais e modelo:")
+    q2_comparativo()
+
+def q2_dados():
+    x = [1,1.5,2,2.5,3]
+    y = [366,550,740,890,1090]
+
+    plt.figure(figsize=(8, 5))
+    plt.scatter(x, y, color='blue', label='Dados reais')
+    plt.title('Q2 - Dados reais')
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.grid(True, linestyle='--', alpha=0.4)
+    plt.legend()
+    plt.show()
+
+def q2_comparativo():
+    x = [1,1.5,2,2.5,3]
+    y = [366,550,740,890,1090]
+    y_est = fy(x, y)
+
+    plt.figure(figsize=(8, 5))
+    plt.scatter(x, y, color='blue', label='Dados reais')
+    plt.plot(x, y_est, color='red', linewidth=2, label='Modelo estimado')
+    plt.title('Q2 - Comparativo - dados reais e modelo')
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.grid(True, linestyle='--', alpha=0.4)
+    plt.legend()
+    plt.show()
 
 def q3():
     x_alt = np.linspace ( 0 , 1 , 50)
     y_true = 10.7 * x_alt + 5.8 + np.random.randn(50) * 8.6
     x_alt = x_alt.tolist()
     y_true = y_true.tolist()
-    print(mse(x_alt,y_true))
+    print("Dados reais:")
+    q3_dados()
+    time.sleep(2)
+    print("Comparativo - dados reais e modelo:")
+    q3_comparativo()
+
+def q3_dados():
+    np.random.seed(42)
+    x_alt = np.linspace(0, 1, 50)
+    y_true = 10.7 * x_alt + 5.8 + np.random.randn(50) * 8.6
+
+    plt.figure(figsize=(8, 5))
+    plt.scatter(x_alt, y_true, color='blue', label='Dados reais')
+    plt.title('Questão 3 - Dados reais')
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.grid(True, linestyle='--', alpha=0.4)
+    plt.legend()
+    plt.show()
+
+def q3_comparativo():
+    np.random.seed(42)
+    x_alt = np.linspace(0, 1, 50)
+    y_true = 10.7 * x_alt + 5.8 + np.random.randn(50) * 8.6
+    x_alt = x_alt.tolist()
+    y_true = y_true.tolist()
+    y_est = fy(x_alt, y_true)
+
+    plt.figure(figsize=(8, 5))
+    plt.scatter(x_alt, y_true, color='blue', label='Dados reais')
+    plt.plot(x_alt, y_est, color='red', linewidth=2, label='Modelo estimado')
+    plt.title('Questão 3 - Comparativo - dados reais e modelo')
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.grid(True, linestyle='--', alpha=0.4)
+    plt.legend()
+    plt.show()
 
     
 
@@ -57,3 +130,5 @@ def q3():
 
 if __name__ == "__main__":
     q2()
+    time.sleep(3)
+    q3()
