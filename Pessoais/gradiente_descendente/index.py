@@ -33,17 +33,19 @@ def mse(arr1,arr2,w,b):
 
 def slope(arr1,arr2,w,b,taxa):
     new = dw(arr1,arr2,w,b)
-    w1 = round(w - taxa * new, 2)
+    #w1 = round(w - taxa * new, 2)
+    w1 = w - taxa * new
     return w1
     
 def intercept(arr1,arr2,w,b,taxa):
-    b1 = round(b - taxa * db(arr1, arr2, w, b), 2)
+    #b1 = round(b - taxa * db(arr1, arr2, w, b), 2)
+    b1 = b - taxa * db(arr1, arr2, w, b)
     return b1
 
 def gradiente(arr1,arr2,w,b,taxa, count):
-    time.sleep(5)
     print("Iteração " + str(count) + " começando.")
-    print(round(mse(arr1,arr2,w,b),2))
+    #print(round(mse(arr1,arr2,w,b),2))
+    print(mse(arr1,arr2,w,b))
     new_w = slope(arr1,arr2,w,b,taxa)
     new_b = intercept(arr1,arr2,w,b,taxa)
     count+= 1
