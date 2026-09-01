@@ -13,19 +13,14 @@ def normalizacao(df):
     return df_normalized
 
 def eliminar_nulos(df, op):
+    df_eliminado = df.copy()
     if op == 0:
-        df = df.dropna(axis=0) #linhas com valores nulos
+        df = df_eliminado.dropna(axis=0) #linhas com valores nulos
     elif op == 1:
-        df = df.dropna(axis=1) #colunas com valores nulos
+        df = df_eliminado.dropna(axis=1) #colunas com valores nulos
     else:
         print("Opção inválida")
     return df
-
-def zscore(df):
-    df_zscore = df.copy()
-    cols = ['orbital_period', 'mass', 'distance'] # Obedecendo à solicitação "Utilize as colunas orbital_period, mass e distance para verificar se a função foi implementada corretamente."
-    df_zscore[cols] = df_zscore[cols].apply(stats.zscore)
-    return df_zscore
     
 def substituicao(op): #Obedecendo à solicitação "Considere utilizar a função fillna()".
     match op:
@@ -44,6 +39,12 @@ def substituicao(op): #Obedecendo à solicitação "Considere utilizar a funçã
             return df.ffill() #parâmetro ffill foi alterado para o método ffill(). Mesmo se aplica para bfill
         case 7: #substituição pelo valor posterior
             return df.bfill()
+        
+def zscore(df):
+    df_zscore = df.copy()
+    cols = ['orbital_period', 'mass', 'distance'] # Obedecendo à solicitação "Utilize as colunas orbital_period, mass e distance para verificar se a função foi implementada corretamente."
+    df_zscore[cols] = df_zscore[cols].apply(stats.zscore)
+    return df_zscore
 
 print(df.head())
 print("\n\n\n" + "Informações do dataset: \n")
@@ -62,9 +63,9 @@ if opcao == 1:
     print("0 - Eliminar linhas com valores nulos")
     print("1 - Eliminar colunas com valores nulos")
     op = int(input("Digite a opção desejada: "))
-    df = eliminar_nulos(df, op)
-    print("\n\n\n" + "Dataframe: \n")
-    print(df)
+    df_elim = eliminar_nulos(df, op)
+    print("\n\n\n" + "Dataframe: (Cópia)\n")
+    print(df_elim)
 elif opcao == 2:
     print("1 - Substituição por média")
     print("2 - Substituição por mediana")
@@ -86,4 +87,4 @@ print("\n\n\n" + "Normalização: \n")
 print(normalizacao(df))
 time.sleep(2)
 print("\n\n\n" + "Z-Score: \n")
-print(zscore(df))
+print(zscore(df).to_string(float_format='{:,.6f}'.format))
