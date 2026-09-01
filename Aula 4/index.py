@@ -7,6 +7,7 @@ df = sns.load_dataset("planets")
 print("Dataset carregado eba")
 
 def normalizacao(df):
+
     df_normalized= df.select_dtypes(include=['float64']).copy()
     df_normalized = (df_normalized - df_normalized.min()) / (df_normalized.max() - df_normalized.min())
 
@@ -15,12 +16,12 @@ def normalizacao(df):
 def eliminar_nulos(df, op):
     df_eliminado = df.copy()
     if op == 0:
-        df = df_eliminado.dropna(axis=0) #linhas com valores nulos
+        df_eliminado = df_eliminado.dropna(axis=0) #linhas com valores nulos
     elif op == 1:
-        df = df_eliminado.dropna(axis=1) #colunas com valores nulos
+        df_eliminado = df_eliminado.dropna(axis=1) #colunas com valores nulos
     else:
         print("Opção inválida")
-    return df
+    return df_eliminado
     
 def substituicao(op): #Obedecendo à solicitação "Considere utilizar a função fillna()".
     match op:
@@ -41,8 +42,14 @@ def substituicao(op): #Obedecendo à solicitação "Considere utilizar a funçã
             return df.bfill()
         
 def zscore(df):
-    df_zscore = df.copy()
-    cols = ['orbital_period', 'mass', 'distance'] # Obedecendo à solicitação "Utilize as colunas orbital_period, mass e distance para verificar se a função foi implementada corretamente."
+    cols = ['orbital_period', 'mass', 'distance'] 
+    df_zscore = df[cols].copy()
+    # Obedecendo à solicitação "Utilize as colunas orbital_period, mass e distance para verificar se a função foi implementada corretamente."
+    #checando se as colunas existem no DataFrame
+    for col in cols:
+        if col not in df_zscore.columns:
+            raise ValueError(f"A coluna '{col}' não existe no DataFrame.")
+            return False
     df_zscore[cols] = df_zscore[cols].apply(stats.zscore)
     return df_zscore
 
@@ -63,9 +70,9 @@ if opcao == 1:
     print("0 - Eliminar linhas com valores nulos")
     print("1 - Eliminar colunas com valores nulos")
     op = int(input("Digite a opção desejada: "))
-    df_elim = eliminar_nulos(df, op)
+    df_tratado = eliminar_nulos(df, op)
     print("\n\n\n" + "Dataframe: (Cópia)\n")
-    print(df_elim)
+    print(df_tratado)
 elif opcao == 2:
     print("1 - Substituição por média")
     print("2 - Substituição por mediana")
@@ -75,16 +82,19 @@ elif opcao == 2:
     print("6 - Substituição pelo valor anterior")
     print("7 - Substituição pelo valor posterior")
     op = int(input("Digite a opção desejada: "))
-    df = substituicao(op)
+    df_tratado = substituicao(op)
     print("\n\n\n" + "Valores nulos após a substituição: \n")
-    print(df.isnull().sum())
+    print(df_tratado.isnull().sum())
     print("\n\n\n" + "Dataframe: \n")
-    print(df)
+    print(df_tratado)
 else: 
     print("Opção inválida")
 time.sleep(2)
 print("\n\n\n" + "Normalização: \n")
-print(normalizacao(df))
+print(normalizacao(df_tratado))
 time.sleep(2)
 print("\n\n\n" + "Z-Score: \n")
-print(zscore(df).to_string(float_format='{:,.6f}'.format))
+if (zscore(df_tratado) is not False):
+    print(zscore(df_tratado).to_string(float_format='{:,.6f}'.format))
+else:
+    print("Erro na função zscore.")
