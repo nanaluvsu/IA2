@@ -6,7 +6,7 @@ pd.options.display.float_format = '{:.2f}'.format
 
 df = sns.load_dataset("tips")
 #tratando colunas
-colunas_texto = df.select_dtypes(include=['object', 'category']).columns
+colunas_texto = ['sex', 'smoker']
 df[colunas_texto] = df[colunas_texto].astype('category').apply(lambda x: x.cat.codes)
 print(df.head(10))
 '''
@@ -19,3 +19,5 @@ print(df["day"].head())
 #pearson = df.corr(method='pearson')
 #print(pearson)
 '''
+pearson = df.corr(method='pearson')
+print(pearson)
