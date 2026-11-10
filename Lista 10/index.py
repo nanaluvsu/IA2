@@ -9,23 +9,31 @@ import time
 pd.options.display.float_format = '{:.2f}'.format
 
 def regressao(x,y):
-    reg_lin = LinearRegression().fit(x,y)
+    X_treino, X_teste, Y_treino, Y_teste = train_test_split(x, y, test_size=0.2, random_state=42)
+
+    reg_lin = LinearRegression().fit(X_treino, Y_treino)
+
     w = reg_lin.coef_[0]
     b = reg_lin.intercept_
-    print("w: " + str(w))
-    print("b: " + str(b))
-    print("\n")
-    predict = reg_lin.predict(x)
-    print(predict)
+
+    for i, coef in enumerate(w):
+        print(f"w{i+1}: {coef}")
+
+    print("b:", b)
     
-    mse = mean_squared_error(y, predict)
-    mae = mean_absolute_error(y, predict)
-    r2 = r2_score(y, predict)
+    predict = reg_lin.predict(X_teste)
+
+    print("\nPrevisões:")
+    print(predict)
+
+    mse = mean_squared_error(Y_teste, predict)
+    mae = mean_absolute_error(Y_teste, predict)
+    r2 = r2_score(Y_teste, predict)
 
     print("MSE:", mse)
     print("MAE:", mae)
     print("R²:", r2)
-    
+
     return predict
     
 def params():
@@ -35,20 +43,7 @@ def params():
     
     return df,x,y
 
-def compare():
-    df = params()[0]
-    y = params()[2]
-    predictions = []
-    for prediction in q1():
-        predictions.append(prediction)
-    for prediction in q2():
-            predictions.append(prediction)
-    for prediction in q3():
-            predictions.append(prediction)
-    
-    plt.figure(figsize=(8, 6))
-    sns.scatterplot(data = predictions, x="y predito", y="y")
-    plt.show()
+
 
 def q1():
     df = params()[0]
@@ -118,7 +113,7 @@ def q2():
     reg_q2 = regressao(x,y)
 
     print("Explicação comentada")
-    '''Em q1, o modelo utiliza a idade dos imóveis como variável independente (X1), enquanto em q2 utiliza a distância até a estação MRT mais próxima(X3).
+    '''Em q1, o modelo utiliza a idade dos imóveis como variável independente (X2), enquanto em q2 utiliza a distância até a estação MRT mais próxima(X3).
        Ao comparar os resultados, é possível observar qual variável apresenta melhor relação linear com o preço dos imóveis. O modelo que apresentar menores valores de MSE e MAE e maior valor de R² terá melhor desempenho nos dados avaliados.
        As diferenças entre os coef. angulares também demonstram como cada variável influencia o preço previsto.'''
     return reg_q2
@@ -128,6 +123,17 @@ def q3():
     x = df[["X1 transaction date","X2 house age","X3 distance to the nearest MRT station","X4 number of convenience stores","X5 latitude","X6 longitude"]]
     y = params()[2]
     reg_q3 = regressao(x,y)
+    print("Explicação comentada")
+    '''Na Q3, foram utilizadas as seis features disponíveis no conjunto
+       de dados como variáveis independentes.
+
+       Diferente de q1 e q2, que utilizavam apenas uma
+       variável de entrada, a regressão multivariável considera
+       simultaneamente diferentes características dos imóveis.
+
+       Dessa forma, o modelo pode identificar a contribuição estimada
+       de cada variável para o preço dos imóveis, permitindo avaliar
+       se a utilização de múltiplas features melhora as previsões.'''
     return reg_q3
 
 q1()
