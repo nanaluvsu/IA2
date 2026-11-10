@@ -124,16 +124,11 @@ def q3():
     y = params()[2]
     reg_q3 = regressao(x,y)
     print("Explicação comentada")
-    '''Na Q3, foram utilizadas as seis features disponíveis no conjunto
-       de dados como variáveis independentes.
+    '''A Regressão Linear Multivariável é um método estatístico que utiliza várias variáveis de entrada para estimar um único resultado. Neste exercício, o modelo utiliza as seis características dos imóveis (data da transação, idade, distância até a estação MRT, número de lojas de conveniência, latitude e longitude) para prever o preço por unidade de área.
 
-       Diferente de q1 e q2, que utilizavam apenas uma
-       variável de entrada, a regressão multivariável considera
-       simultaneamente diferentes características dos imóveis.
+       Diferentemente da regressão linear simples, que considera apenas uma variável de entrada, a multivariável analisa todas essas características simultaneamente, permitindo considerar a influência de cada uma na previsão.
 
-       Dessa forma, o modelo pode identificar a contribuição estimada
-       de cada variável para o preço dos imóveis, permitindo avaliar
-       se a utilização de múltiplas features melhora as previsões.'''
+       O modelo apresentou um desempenho superior aos modelos anteriores, pois conseguiu utilizar mais informações sobre os imóveis para realizar as previsões.'''
     return reg_q3
 
 q1()
