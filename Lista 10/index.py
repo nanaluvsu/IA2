@@ -4,6 +4,7 @@ import scipy.stats as stats
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 import time
 pd.options.display.float_format = '{:.2f}'.format
 
@@ -17,7 +18,13 @@ def regressao(x,y):
     predict = reg_lin.predict(x)
     print(predict)
     
-    plt.figure(figsize=(8, 6))
+    mse = mean_squared_error(y, predict)
+    mae = mean_absolute_error(y, predict)
+    r2 = r2_score(y, predict)
+
+    print("MSE:", mse)
+    print("MAE:", mae)
+    print("R²:", r2)
     
     return predict
     
@@ -91,7 +98,11 @@ def q1():
 
     print("===========")
     print("e)")
-    '''Responder depois'''
+    print("Resposta comentada")
+    '''A função train_test_split recebe dados de 2 vetores e os embaralha aleatoriamente, baseando-se no "random_state"
+depois, ela separa os registros com base num indice indicado, "test_size"
+
+por fim, os resultados gerados sao 2 conjuntos de x e y, sendo um conjunto de treino e outro de teste.'''
     print("\n")
 
     print("===========")
@@ -102,8 +113,14 @@ def q1():
 def q2():
     df = params()[0]
     y = params()[2]
-    x = df[["X3 distance to the nearest MRT station"]]
+    x = df[["X3 distance to the nearest MRT station"]] 
+    
     reg_q2 = regressao(x,y)
+
+    print("Explicação comentada")
+    '''Em q1, o modelo utiliza a idade dos imóveis como variável independente (X1), enquanto em q2 utiliza a distância até a estação MRT mais próxima(X3).
+       Ao comparar os resultados, é possível observar qual variável apresenta melhor relação linear com o preço dos imóveis. O modelo que apresentar menores valores de MSE e MAE e maior valor de R² terá melhor desempenho nos dados avaliados.
+       As diferenças entre os coef. angulares também demonstram como cada variável influencia o preço previsto.'''
     return reg_q2
     
 def q3():
